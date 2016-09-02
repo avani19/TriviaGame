@@ -1,158 +1,156 @@
+// Define Questions as a variable
 var question1 = {
     qus: "What is your name?",
     ans: ["a", "b", "c", "d"],
-    correctans: 1,
+    correctAns: 1,
 };
 var question2 = {
     qus: "what are you doing?",
     ans: ["cooking", "watching tv", "sleeping", "typing"],
-    correctans: 3,
+    correctAns: 3,
 };
 var question3 = {
     qus: "how are you?",
     ans: ["dizzy", "mmm", "great", "not well"],
-    correctans: 2,
+    correctAns: 2,
 };
-var title = "Can you name the Pokemon looking at the picture?";
-var questions = [question1, question2, question3];
+// make a variable contain all the question
+var questions = [question1, question2, question3]; 
+// Define all the variable globally
 var currentQuestion = 0;
 var correctAnswer = 0;
 var incorrectAnswer = 0;
 var unansweredQuestion = 0;
-var printQuestionTime = 10;
+var printQuestionTime = 0;
 var questionTime;
 var selected;
 var counter;
-var userans;
+var userAnswer;
 var answers = false;
-var correct = ["Yes, nailed it!!!"];
-var wrong = ["No, you got it wrong!!"];
-var unanswered = ["You missed it"];
+var correctans;
+var userChoice;
 
+// empty title
+// before displying next page clear unnecessary div
 $("#title").html('');
-$("#btn").on('click', function(){
-    $("#title").html(title);
-    $(this).hide();
-    $("#name").html('');
-    displayQuestion();
-    timer.run();
-});
-    
-
-function displayQuestion(){
-    selected = true;
-    var questionToAnswer = (questions[currentQuestion].qus);
-    $("#question").html("");
-    $("#question").append(questionToAnswer);
-
-    for(i=0; i<questions[currentQuestion].ans.length; i++){
-    var optionsToAnswer = ('<ol><button>'+questions[currentQuestion].ans[i]+' </button><ol>');
-    $("#options").append(optionsToAnswer);
-    }
-    
-    // currentQuestion++;
-
-// $(document).on('click', 'input', function() {
-//   $('#question').html('');
-//   $('#options').html('');
-//   displayQuestion();
-// });
-}
-    // var number = 10;
-
-//Timer functions: 
+// $("#PlayAgain").html('');
+// define timer function as a varible, inside the function again define a time 
 var timer = {
 run: function(){
+    printQuestionTime = 100;
     $("#time").html("<h2>Time Remaining: " + printQuestionTime + "</h2>");
     selected = true;
     counter = setInterval(timer.decrement, 1000);
 },
 decrement: function(){
+    // printQuestionTime = 10;
     printQuestionTime--;
     $('#time').html('<h2>Time Remaining: ' + printQuestionTime + '</h2>');
     if (printQuestionTime < 1){
         timer.stop();
-        // displaynextQuestion();
         selected = false;
-        displaynextQuestion();
+        checkAnswer();
+        // timer.run();
+        // timer.reset();
     }
 },
 stop: function(){
     clearInterval(counter);
 }
 };
+// when start button click start game function and empty other divs 
+$("#btn").on('click', function(){
+    $("#title").html("Pokemon Trivia");
+    $(this).hide();
+    $("#name").html('');
+    gameStart();
+});
+// make div empty and again define a empty value for variables and disply question cycle
+function gameStart(){
+    $("#endscore").html('');
+    $("#correctAnswer").html('');
+    $("#incorrectAnswer").html('');
+    $("#unanswered").html('');
+    currentQuestion = 0;
+    correctAnswer = 0;
+    incorrectAnswer = 0;
+    unansweredQuestion = 0;
+    displayQuestion();
+}
+// disply question and options,for options make a new div then attribute that div for a click operation
+function displayQuestion(){
+    $("#result").html('');
+    $("#rightans").html('');
+    selected = true;
 
+    var questionToAnswer = (questions[currentQuestion].qus);
+    $("#question").html("");
+    $("#question").append(questionToAnswer);
 
-function displaynextQuestion(){
-    var userans;
+    for(var i=0; i<questions[currentQuestion].ans.length; i++){
+        var optionsToAnswer = $('<div>');
+        optionsToAnswer.text(questions[currentQuestion].ans[i]);
+        optionsToAnswer.attr({'data-value' : i});
+        optionsToAnswer.addClass('choice');
+        $("#options").append(optionsToAnswer);
+    }
+    timer.run();
+    $(".choice").on('click', function() {
+    userAnswer = $(this).data('value');
+    timer.stop();
+    // timer.reset();
+    // timer.run();
+    checkAnswer();
+    });
+}
+// create two variable index and text; index to compare the answer and text to diply the correct ans if answer is wrong
+// compare ques and answer and make operation accordingly
+// when it is a last ques disply last score page and if it is not last que keep moving to the next ques
+function checkAnswer(){
+    $(".choice").html('');
     $("#question").html('');
-    $("#options").html('');
-    // $("#title").html('');
-    var perticularans = (questions[currentQuestion].ans[questions[currentQuestion].correctans]);
-    var allans = (questions[currentQuestion].correctans);
 
-    if ((userans == allans) && (selected == true)){
+    var answerIndex = (questions[currentQuestion].correctAns);
+    var answerText = (questions[currentQuestion].ans[questions[currentQuestion].correctAns]);
+   
+    if ((userAnswer == answerIndex) && (selected == true)){
        correctAnswer++;
-       $("#result").html(correct);
+       $("#result").html("Yes, nailed it!!!");
        console.log("true");
-    }else if((userans != allans) && (selected == true)){
+    }else if((userAnswer != answerIndex) && (selected == true)){
         incorrectAnswer++;
-        $("#result").html(wrong);
-        $("#rightans").html("The correct answer is: " + perticularans);
+        $("#result").html("No, you got it wrong!!");
+        $("#rightans").html("The correct answer is: " + answerText );
         console.log("wrong");
     }else{
         unansweredQuestion++;
-        $("#result").html(unanswered);
+        $("#result").html("You missed it");
         console.log("unans");
-        $("#rightans").html("The correct answer is: " + perticularans);
+        $("#rightans").html("The correct answer is: " + answerText);
         selected = true;
     }
+    if(currentQuestion == (questions.length-1)){
+        setTimeout(resultPage, 5000)
+    }else{
+        currentQuestion++;
+        // timer.reset();
+        setTimeout(displayQuestion, 5000);
+    }   
 }
-    
-// function rsultPage (){}
-
-
-
-    // when start button pressed
-
-    // display timer
-
-    // display 1st question and options; 
-    // when timer = 0 show next question
-
-// $(document).on('click', 'input', function() {
-//   $('#question').html('');
-//   $('#options').html('');
-//   displayQuestion();
-// });
-
-// // game object
-// var game = {
-//     questionCount:0,
-//     displayQuestion: function() {
-//     },
-
-
-
-// }
-
-// timer object
-// var timer = {
-//     time: 30,
-//     start: function() {
-
-//     },
-//     stop: function() {
-        
-//     },
-//     decrement: function() {
-        
-//     }
-
-// }
-
-// on start
-
-// if you're going to use inputs or buttons that get genereated dynamically -- look up jquery event bubbling
-
+//display result  
+function resultPage(){
+    $("#title").html('');
+    $("#time").html('');
+    $("#result").html('');
+    $("#rightans").html('');
+    $("#endscore").html("Game Over!! let's see your score");
+    $("#correctAnswer").html("Total Correct Answers: " + correctAnswer);
+    $("#incorrectAnswer").html("Total Incorrect Answers: " + incorrectAnswer);
+    $("#unanswered").html("total Unanswered Questions: " + unansweredQuestion);
+    $("#PlayAgain").html("Play Again");
+}
+$('#PlayAgain').on('click', function(){
+    $(this).hide();
+    gameStart();
+});
 
