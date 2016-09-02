@@ -1,22 +1,58 @@
 // Define Questions as a variable
 var question1 = {
-    qus: "What is your name?",
-    ans: ["a", "b", "c", "d"],
+    qus: "1. What colour are Raichu cheeks?",
+    ans: ["Red", "Yellow", "Green", "Blue"],
     correctAns: 1,
 };
 var question2 = {
-    qus: "what are you doing?",
-    ans: ["cooking", "watching tv", "sleeping", "typing"],
+    qus: "2. Who dose Cubone evolve into?",
+    ans: ["Rattata", "Pidgey", "weedle", "Marowak"],
     correctAns: 3,
 };
 var question3 = {
-    qus: "how are you?",
-    ans: ["dizzy", "mmm", "great", "not well"],
+    qus: "3. Which pokemon hatches from Misty's egg?",
+    ans: ["Spearow", "Caterpie", "Togepi", "Nidoran"],
+    correctAns: 2,
+};
+var question4 = {
+    qus: "4. What is Ash's first pokemon?",
+    ans: ["Pikachu", "Seel", "Raichu", "Magmar"],
+    correctAns: 0,
+};
+var question5 = {
+    qus: "5. Which three pokemon can you first select from Professor Oak?",
+    ans: ["Bulbasaur,Squirtle,Charmander", "Kakuna,Weedle,Beedrill", "Pidgeotto,Raticate,Diglett", "Growlithe,Arcanine,Poliwag"],
+    correctAns: 0,
+};
+var question6 = {
+    qus: "6. Which pokemon can transfer into any pokemon?",
+    ans: ["Mankey", "Muk", "Ditto", "Onix"],
+    correctAns: 2,
+};
+var question7 = {
+    qus: "7. Which pokemon is man-made?",
+    ans: ["Drowzee", "Tangela", "Horsea", "Mewtwo"],
+    correctAns: 3,
+};
+var question8 = {
+    qus: "8. Who dose Bulbasur evolve into?",
+    ans: ["Marowak", "Ivysaur", "Koffing", "Seadra"],
+    correctAns: 1,
+};
+var question9 = {
+    qus: "9. Which pokemon always sleeps?",
+    ans: ["Articuno", "Snorlax", "Dratini", "Mew"],
+    correctAns: 1,
+};
+var question10 = {
+    qus: "10. Which pokemon makes everyone fall asleep?",
+    ans: ["Chikorita", "Totodile", "Jigglypuff", "Furret"],
     correctAns: 2,
 };
 // make a variable contain all the question
-var questions = [question1, question2, question3]; 
+var questions = [question1, question2, question3, question4, question5, question6, question7, question8, question9, question10]; 
 // Define all the variable globally
+var pokemonImages = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8', 'P9', 'P10'];
 var currentQuestion = 0;
 var correctAnswer = 0;
 var incorrectAnswer = 0;
@@ -29,29 +65,26 @@ var userAnswer;
 var answers = false;
 var correctans;
 var userChoice;
+var header = ["Pokemon Trivia"];
 
 // empty title
 // before displying next page clear unnecessary div
 $("#title").html('');
-// $("#PlayAgain").html('');
 // define timer function as a varible, inside the function again define a time 
 var timer = {
 run: function(){
-    printQuestionTime = 100;
+    printQuestionTime = 10;
     $("#time").html("<h2>Time Remaining: " + printQuestionTime + "</h2>");
     selected = true;
     counter = setInterval(timer.decrement, 1000);
 },
 decrement: function(){
-    // printQuestionTime = 10;
     printQuestionTime--;
     $('#time').html('<h2>Time Remaining: ' + printQuestionTime + '</h2>');
     if (printQuestionTime < 1){
         timer.stop();
         selected = false;
         checkAnswer();
-        // timer.run();
-        // timer.reset();
     }
 },
 stop: function(){
@@ -60,7 +93,9 @@ stop: function(){
 };
 // when start button click start game function and empty other divs 
 $("#btn").on('click', function(){
-    $("#title").html("Pokemon Trivia");
+    $('#title').html('<img src = "assets/images/header.png" width = "100px">');
+    $("#title").append(header);
+    $('#title').append('<img src = "assets/images/header.png" width = "100px">');
     $(this).hide();
     $("#name").html('');
     gameStart();
@@ -81,6 +116,7 @@ function gameStart(){
 function displayQuestion(){
     $("#result").html('');
     $("#rightans").html('');
+    $("#Pokemonimg").html('');
     selected = true;
 
     var questionToAnswer = (questions[currentQuestion].qus);
@@ -98,8 +134,6 @@ function displayQuestion(){
     $(".choice").on('click', function() {
     userAnswer = $(this).data('value');
     timer.stop();
-    // timer.reset();
-    // timer.run();
     checkAnswer();
     });
 }
@@ -109,7 +143,7 @@ function displayQuestion(){
 function checkAnswer(){
     $(".choice").html('');
     $("#question").html('');
-
+    $('#Pokemonimg').html('<img src = "assets/images/'+ pokemonImages[currentQuestion] +'.png" width = "300px">');
     var answerIndex = (questions[currentQuestion].correctAns);
     var answerText = (questions[currentQuestion].ans[questions[currentQuestion].correctAns]);
    
@@ -131,6 +165,7 @@ function checkAnswer(){
     }
     if(currentQuestion == (questions.length-1)){
         setTimeout(resultPage, 5000)
+        // when changing time less than 5000 not working
     }else{
         currentQuestion++;
         // timer.reset();
@@ -139,6 +174,7 @@ function checkAnswer(){
 }
 //display result  
 function resultPage(){
+    $("#Pokemonimg").html('');
     $("#title").html('');
     $("#time").html('');
     $("#result").html('');
