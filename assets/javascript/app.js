@@ -67,6 +67,27 @@ var correctans;
 var userChoice;
 var header = ["Pokemon Trivia"];
 
+// var audioElement = document.createElement('audio');
+//     audioElement.setAttribute('src', 'assets/audio/Pokémon Theme Song.mp3');
+//  $(".btn").on("click", function(){
+//          audioElement.play();
+//   });
+  $(document).ready(function() {
+        var audioElement = document.createElement('audio');
+        audioElement.setAttribute('src', 'assets/audio/Pokémon Theme Song.mp3');
+        audioElement.setAttribute('autoplay', 'autoplay');
+        //audioElement.load()
+
+        $.get();
+
+        audioElement.addEventListener("load", function() {
+            audioElement.play();
+        }, true);
+
+        $('#btn').click(function() {
+            audioElement.play();
+        });
+}); 
 // empty title
 // before displying next page clear unnecessary div
 $("#title").html('');
